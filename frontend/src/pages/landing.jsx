@@ -1,5 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import ScreenshotShowcase from "../components/screenshot";
+import FooterSection from "../components/footer";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -21,84 +24,62 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen w-full relative bg-gradient-to-br from-[#cdc6cc] via-[#f080e7] to-[#eeceef] text-black font-poppins overflow-hidden">
-      {/* Cloud Background Layer */}
+      
+      {/* Clouds */}
       <div className="absolute top-20 left-0 w-full overflow-hidden z-0 h-48 pointer-events-none">
         <div className="relative w-[300%] h-full animate-cloudMove flex items-center gap-8">
-          {/* Cloud 1 */}
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-35 w-auto opacity-90"
-          />
-          {/* Cloud 2 */}
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-45 w-auto opacity-80"
-          />
-          {/* Cloud 3 */}
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-40 w-auto opacity-85"
-          />
-          {/* Cloud 4 */}
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-35 w-auto opacity-75"
-          />
-          {/* Repeat for seamless scroll */}
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-45 w-auto opacity-90"
-          />
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-40 w-auto opacity-85"
-          />
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-45 w-auto opacity-80"
-          />
-          <img
-            src="/clouds.png"
-            alt="cloud"
-            className="h-40 w-auto opacity-75"
-          />
+          {Array.from({ length: 8 }).map((_, i) => (
+            <img
+              key={i}
+              src="/clouds.png"
+              alt="cloud"
+              className="h-40 w-auto opacity-80"
+            />
+          ))}
         </div>
       </div>
 
+      {/* Custom styles */}
       <style>
         {`
-    @keyframes cloudMove {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
+          @keyframes cloudMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
 
-    .animate-cloudMove {
-      animation: cloudMove 60s linear infinite;
-    }
-  `}
+          .animate-cloudMove {
+            animation: cloudMove 60s linear infinite;
+          }
+
+          .rain-drop {
+            position: absolute;
+            top: -10px;
+            width: 2px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+          }
+
+          @keyframes fall {
+            0% { transform: translateY(0); opacity: 0.8; }
+            100% { transform: translateY(100vh); opacity: 0; }
+          }
+        `}
       </style>
 
-      {/* Rain Container */}
-      <div
-        ref={rainRef}
-        className="absolute inset-0 z-0 pointer-events-none"
-      ></div>
+      {/* Rain */}
+      <div ref={rainRef} className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Main Content */}
+      {/* Hero Section */}
       <div className="relative z-20 flex flex-col items-center justify-center px-10 pt-40 pb-16 text-center">
         <h1 className="text-5xl sm:text-6xl font-bold mb-4 drop-shadow-xl">
           Dear Future Me ✉️
         </h1>
         <p className="text-lg sm:text-xl max-w-xl mb-10">
-          Write a letter to your future self. Reflect, dream, and send it
-          through time. One email, infinite impact.
+          Write a letter to your future self. Reflect, dream, and send it through time.
+          One email, infinite impact.
         </p>
         <div className="space-x-4">
           <button
@@ -116,32 +97,31 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Style for raindrops */}
-      <style>
-        {`
-          .rain-drop {
-            position: absolute;
-            top: -10px;
-            width: 2px;
-            height: 15px;
-            background: rgba(255, 255, 255, 0.6);
-            animation-name: fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-          }
+     <motion.p
+  initial={{ width: 0 }}
+  animate={{ width: "fit-content" }}
+  transition={{ duration: 2, ease: "easeInOut" }}
+  className="text-xl sm:text-2xl font-bold text-black mt-10
+  mx-auto text-center overflow-hidden whitespace-nowrap border-r-2 border-black animate-typing"
+>
+  Your story is worth telling. Let your future self smile back at your present.
+</motion.p>
 
-          @keyframes fall {
-            0% {
-              transform: translateY(0);
-              opacity: 0.8;
-            }
-            100% {
-              transform: translateY(100vh);
-              opacity: 0;
-            }
-          }
-        `}
-      </style>
+
+      {/* Screenshot Section */}
+      <div className="mt-0">
+        <ScreenshotShowcase />
+      </div>
+
+      {/* Footer */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="mt-35"
+      >
+        <FooterSection />
+      </motion.div>
     </div>
   );
 };

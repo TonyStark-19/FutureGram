@@ -48,3 +48,16 @@
   animation: rainFall 1.5s linear infinite;
   opacity: 0.5;
 }
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
+
+.animate-typing {
+  animation: typing 3s steps(60, end), blink 0.75s step-end infinite;
+}
