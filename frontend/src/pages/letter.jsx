@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon, Heart } from "lucide-react";
+import API from "../api"; // this connects axios to your backend
 
 const themes = {
   dark: {
@@ -45,10 +46,33 @@ const LetterPage = () => {
     setFormData({ ...formData, message: inspireMessages[random] });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Letter submitted:", formData);
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const payload = {
+      email: formData.email,
+      content: formData.message,
+      scheduledDate: formData.date,
+    };
+
+    const res = await API.post("/letters", payload); // 🔗 sending to backend
+    alert("Letter sent successfully!");
+    console.log("Saved:", res.data);
+
+    // Clear the form
+    setFormData({
+      name: "",
+      email: "",
+      date: "",
+      message: "",
+    });
+  } catch (err) {
+    console.error("Error:", err.response?.data || err.message);
+    alert("Failed to send letter");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#d882ca] via-[#fce3ff] to-[#f980e3] flex flex-col items-center justify-center font-poppins px-4 py-12">

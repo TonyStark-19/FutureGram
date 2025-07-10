@@ -3,6 +3,6 @@ const { createLetter } = require("../controllers/lettersControllers");
 
 const router = express.Router();
 
-router.post("/", createLetter);
+router.route("/").post(createLetter)
 
 module.exports = router;

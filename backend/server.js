@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 
 const letterRoutes = require("./routes/letterRoutes");
+const authRoutes = require("./routes/authRoutes")
 require("./scheduler/cronJob"); // run cron
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/letters", letterRoutes);
+app.use("/api/auth", authRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
