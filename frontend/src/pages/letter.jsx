@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon, Heart } from "lucide-react";
-import API from ".Api.jsx"; // this connects axios to your backend
+import API from "../Api";
 
 const themes = {
   dark: {
