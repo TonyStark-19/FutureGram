@@ -101,7 +101,7 @@ const LandingPage = () => {
   initial={{ width: 0 }}
   animate={{ width: "fit-content" }}
   transition={{ duration: 2, ease: "easeInOut" }}
-  className="text-xl sm:text-2xl font-bold text-black mt-10
+  className="text-x sm:text-3xl font-bold text-black mt-10
   mx-auto text-center overflow-hidden whitespace-nowrap border-r-2 border-black animate-typing"
 >
   Your story is worth telling. Let your future self smile back at your present.

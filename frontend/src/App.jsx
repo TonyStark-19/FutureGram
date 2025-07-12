@@ -3,7 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/landing';
 import Header from './components/header';
  import LetterPage from './pages/letter';
-// import SuccessPage from './pages/SuccessPage';
+import LoginPage from './pages/login';
+import RegisterPage from './pages/register';
+
 
 const App = () => {
   return (
@@ -14,6 +16,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/letter" element={<LetterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         {/*<Route path="/success" element={<SuccessPage />} /> */}
       </Routes>
     </div>
