@@ -3,20 +3,41 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import BackgroundMotion from "../components/backgroundmotion"; // ✅ uses same wave bg
 import { motion } from "framer-motion";
+import Api from '../Api'
+
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [alert, setAlert] = useState({ type: "", message: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Registration submitted:", form);
-  };
+  try {
+    const res = await Api.post("/auth/register", form);
+    const { token, user } = res.data;
+
+    localStorage.setItem("token", token);
+
+    setAlert({ type: "success", message: `💖 Registered!, ${user.username}!` });
+    setTimeout(() => {
+      navigate("/letter");
+    }, 1500);
+  } catch (err) {
+    setAlert({
+      type: "error",
+      message:
+        err.response?.data?.message ||
+        "⚠️ Registration failed. Please check your credentials.",
+    });
+  }
+};
+
 
   return (
     <div
@@ -27,6 +48,22 @@ const RegisterPage = () => {
     >
       {/* 🌊 Background Waves */}
       <BackgroundMotion />
+
+      {alert.message && (
+  <motion.div
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0 }}
+    className={`mb-4 px-4 py-2 rounded-xl text-sm font-medium text-center ${
+      alert.type === "success"
+        ? "bg-pink-200 text-pink-800 shadow-[0_0_20px_#ff9ddc]"
+        : "bg-red-100 text-red-600 shadow-[0_0_20px_#f08080]"
+    }`}
+  >
+    {alert.message}
+  </motion.div>
+)}
+
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -43,8 +80,8 @@ const RegisterPage = () => {
             </label>
             <input
               type="text"
-              name="name"
-              value={form.name}
+              name="username"
+              value={form.username}
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f080e7]"

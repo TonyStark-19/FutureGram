@@ -12,7 +12,7 @@ const Header = () => {
       {/* Social Links */}
       <div className="flex gap-4 text-xl">
         <a
-          href="https://github.com/yourusername"
+          href="https://github.com/hitoriiiiiiii/FutureGram"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-[#ba72bc] transition"
@@ -20,7 +20,7 @@ const Header = () => {
           <FaGithub />
         </a>
         <a
-          href="https://twitter.com/yourusername"
+          href="https://twitter.com/panic_coder"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-[#ba72bc] transition"
