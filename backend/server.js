@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173", // or your frontend URL
+  origin: "https://future-gram-wqxe.vercel.app/", // or your frontend URL
   credentials: true
 }));
 app.use(express.json());
