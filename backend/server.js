@@ -10,7 +10,11 @@ require("./scheduler/cronJob"); // run cron
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: "http://localhost:5173", // or your frontend URL
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/letters", letterRoutes);

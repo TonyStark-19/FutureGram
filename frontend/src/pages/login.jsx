@@ -118,9 +118,7 @@ const LoginPage = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-[#140d14] text-white py-2 rounded-xl shadow-[0_0_30px_rgba(255,255,255,0.2)]
- hover:bg-[#4f4d4e] shadow-md transition duration-300 hover:shadow-[0_0_20px_#f080e7]
-"
+            className="w-full bg-[#140d14] text-white py-2 rounded-xl shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:bg-[#4f4d4e] transition duration-300 hover:shadow-[0_0_20px_#f080e7]"
           >
             Log In
           </button>
