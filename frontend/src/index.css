@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+
+/* Clouds animation */
+@keyframes cloudMove {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -1000px 0;
+  }
+}
+
+/* Rain animation */
+@keyframes rainFall {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.clouds-bg {
+  background: url('/clouds.png') repeat-x;
+  background-size: cover;
+  animation: cloudMove 60s linear infinite;
+}
+
+/* Create light rain using tiny lines */
+.rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.rain-drop {
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: #ccc;
+  animation: rainFall 1.5s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
+
+.animate-typing {
+  animation: typing 3s steps(60, end), blink 0.75s step-end infinite;
+}
+
+@keyframes blob1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -30px) scale(1.1); }
+}
+@keyframes blob2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 40px) scale(1.05); }
+}
+@keyframes blob3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, 30px) scale(0.95); }
+}
+
+.animate-blob1 {
+  animation: blob1 18s infinite ease-in-out;
+}
+.animate-blob2 {
+  animation: blob2 24s infinite ease-in-out;
+}
+.animate-blob3 {
+  animation: blob3 20s infinite ease-in-out;
+}
