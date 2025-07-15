@@ -1,11 +1,4 @@
 
-# Project Title
-
-A brief description of what this project does and who it's for
-
-Absolutely, Prarthana! Here's a clean and professional brief about **FutureGram**, along with a clear explanation of its directory structure.
-
----
 
 ## 🌟 Project Name: **FutureGram**
 
