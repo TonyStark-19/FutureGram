@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> future/main
 ## 🌟 Project Name: **FutureGram**
 
 **FutureGram** is a MERN-stack-based web application that allows users to write heartfelt letters to their *future selves*. It’s an emotionally thoughtful productivity app that helps users reflect on their goals, express gratitude, and stay motivated over time by scheduling messages that will be emailed to them later.

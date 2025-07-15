@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
+<<<<<<< HEAD
   baseURL: "https://prsnl-letter.onrender.com/api", // Make sure this is correct
   timeout: 10000,
 });
@@ -22,4 +23,9 @@ API.interceptors.response.use(
   }
 );
 
+=======
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api",
+});
+
+>>>>>>> future/main
 export default API;
