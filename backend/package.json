@@ -4,10 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-<<<<<<< HEAD
     "test": "echo \"Error: no test specified\" && exit 1",
-=======
->>>>>>> future/main
     "start": "node server.js"
   },
   "keywords": [],
@@ -21,13 +18,8 @@
     "mongoose": "^8.16.1",
     "node-cron": "^4.2.0",
     "nodemailer": "^7.0.5",
-<<<<<<< HEAD
-     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.0"
-=======
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.0",
     "cloudinary": "^1.41.3"
->>>>>>> future/main
   }
 }
