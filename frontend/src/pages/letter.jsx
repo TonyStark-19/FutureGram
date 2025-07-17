@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon, Heart, Home, Mail, ChevronsLeft, ChevronsRight, Bold, Italic, Underline } from "lucide-react";
-import API from "../Api"; // Ensure this is an Axios instance with proper baseURL
-import Header from "../components/Header"; // Verify correct path and case
+import API from "../Api"; 
+import Header from "../components/Header";
 import {
   Drawer,
   IconButton,
@@ -17,7 +17,11 @@ import {
   useTheme,
   Divider,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
+import { LocalizationProvider, DesktopDatePicker, MobileDatePicker, StaticTimePicker, MobileTimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 // Theme configuration
 const themes = {
@@ -142,10 +146,12 @@ const HeaderWrapper = styled("div", { shouldForwardProp: (prop) => prop !== "ope
 
 const LetterPage = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    date: "",
+    date: null, // Store as Dayjs object or null
+    time: null, // Store as Dayjs object or null
     message: "",
   });
   const [currentTheme, setCurrentTheme] = useState("rosy");
@@ -169,6 +175,20 @@ const LetterPage = () => {
     }));
   };
 
+  const handleDateChange = (newDate) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      date: newDate,
+    }));
+  };
+
+  const handleTimeChange = (newTime) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      time: newTime,
+    }));
+  };
+
   const inspireMessages = [
     "🌸 Keep blooming, even in the dark.",
     "🚀 You're stronger than you think.",
@@ -188,8 +208,8 @@ const LetterPage = () => {
     e.preventDefault();
 
     // Validation
-    if (!formData.email || !formData.message || !formData.date) {
-      alert("Please fill in all required fields");
+    if (!formData.email || !formData.message || !formData.date || !formData.time) {
+      alert("Please fill in all required fields, including date and time");
       return;
     }
 
@@ -200,16 +220,25 @@ const LetterPage = () => {
       return;
     }
 
+    // Combine date and time into ISO string
+    const date = dayjs(formData.date);
+    const time = dayjs(formData.time);
+    const scheduledDateTime = date
+      .set("hour", time.hour())
+      .set("minute", time.minute())
+      .set("second", 0)
+      .toISOString();
+
     try {
       const payload = {
         email: formData.email,
         content: formData.message,
-        scheduledDate: formData.date,
+        scheduledDate: scheduledDateTime,
       };
       const res = await API.post("/letters", payload);
       alert("Letter sent successfully!");
       console.log("Saved:", res.data);
-      setFormData({ name: "", email: "", date: "", message: "" });
+      setFormData({ name: "", email: "", date: null, time: null, message: "" });
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
       alert("Failed to send letter");
@@ -229,197 +258,294 @@ const LetterPage = () => {
   }));
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <HeaderWrapper open={open}>
-        <Header />
-      </HeaderWrapper>
-      <MiniDrawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <Tooltip title={open ? "Close Drawer" : "Open Drawer"} placement="right">
-            <IconButton
-              onClick={open ? handleDrawerClose : handleDrawerOpen}
-              sx={{ color: "#ffffff" }}
-              aria-label={open ? "Close drawer" : "Open drawer"}
-            >
-              {open ? <ChevronsLeft size={24} /> : <ChevronsRight size={24} />}
-            </IconButton>
-          </Tooltip>
-        </DrawerHeader>
-        <Divider sx={{ borderColor: "#333" }} />
-        <List>
-          {themeItems.map((item) => (
-            <ListItem key={item.key} disablePadding sx={{ display: "block" }}>
-              <Tooltip title={!open ? item.text : ""} placement="right">
-                <ListItemButton
-                  onClick={item.onClick}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                    "&:hover": {
-                      backgroundColor: "#333",
-                    },
-                    backgroundColor: currentTheme === item.key ? "#444" : "transparent",
-                  }}
-                >
-                  <ListItemIcon
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <HeaderWrapper open={open}>
+          <Header />
+        </HeaderWrapper>
+        <MiniDrawer variant="permanent" open={open}>
+          <DrawerHeader>
+            <Tooltip title={open ? "Close Drawer" : "Open Drawer"} placement="right">
+              <IconButton
+                onClick={open ? handleDrawerClose : handleDrawerOpen}
+                sx={{ color: "#ffffff" }}
+                aria-label={open ? "Close drawer" : "Open drawer"}
+              >
+                {open ? <ChevronsLeft size={24} /> : <ChevronsRight size={24} />}
+              </IconButton>
+            </Tooltip>
+          </DrawerHeader>
+          <Divider sx={{ borderColor: "#333" }} />
+          <List>
+            {themeItems.map((item) => (
+              <ListItem key={item.key} disablePadding sx={{ display: "block" }}>
+                <Tooltip title={!open ? item.text : ""} placement="right">
+                  <ListItemButton
+                    onClick={item.onClick}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "#ffffff",
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                      "&:hover": {
+                        backgroundColor: "#333",
+                      },
+                      backgroundColor: currentTheme === item.key ? "#444" : "transparent",
                     }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.text}
-                    sx={{
-                      opacity: open ? 1 : 0,
-                      color: "#ffffff",
-                    }}
-                  />
-                </ListItemButton>
-              </Tooltip>
-            </ListItem>
-          ))}
-        </List>
-      </MiniDrawer>
-      <Main open={open}>
-        <DrawerHeader />
-        <div className="min-h-screen flex flex-col items-center justify-center font-poppins px-4 py-12">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center text-white">
-            💭 "Dear me, I hope you're smiling today. Remember, you planted this seed."
-          </h2>
-          <div className="w-full max-w-6xl bg-gradient-to-br from-purple-600 via-pink-500 to-purple-800 p-6 rounded-3xl border border-dashed border-pink-400 shadow-2xl">
-            <div className="flex flex-col lg:flex-row gap-6">
-              {/* Mail Box Area */}
-              <div className="flex-1">
-                <div
-                  className="rounded-2xl border shadow-lg overflow-hidden"
-                  style={{
-                    backgroundColor: themes[currentTheme].bg,
-                    borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.3)",
-                  }}
-                >
-                  {/* Header */}
-                  <div
-                    className="px-4 py-3 border-b"
-                    style={{
-                      borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.2)",
-                      backgroundColor: currentTheme === "white" ? "#f9fafb" : "rgba(0,0,0,0.1)",
-                    }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <motion.button
-                        whileTap={{ scale: 0.95 }}
-                        whileHover={{ scale: 1.02 }}
-                        onClick={handleSubmit}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors font-medium shadow-lg flex items-center gap-2"
-                        aria-label="Send letter"
-                      >
-                        Send 🚀
-                      </motion.button>
-                    </div>
-                  </div>
-
-                  {/* Message Area */}
-                  <div className="p-4">
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Write your heartfelt message..."
-                      rows={12}
-                      className="w-full h-full bg-transparent border-none outline-none resize-none text-base leading-relaxed"
-                      style={{
-                        color: themes[currentTheme].text,
-                        minHeight: "300px",
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "#ffffff",
                       }}
-                      maxLength={1000}
-                      aria-label="Message input"
-                      required
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      sx={{
+                        opacity: open ? 1 : 0,
+                        color: "#ffffff",
+                      }}
                     />
-                  </div>
-
-                  {/* Formatting Toolbar */}
+                  </ListItemButton>
+                </Tooltip>
+              </ListItem>
+            ))}
+          </List>
+        </MiniDrawer>
+        <Main open={open}>
+          <DrawerHeader />
+          <div className="min-h-screen flex flex-col items-center justify-center font-poppins px-4 py-12">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center text-white">
+              💭 "Dear me, I hope you're smiling today. Remember, you planted this seed."
+            </h2>
+            <div className="w-full max-w-6xl bg-gradient-to-br from-purple-600 via-pink-500 to-purple-800 p-6 rounded-3xl border border-dashed border-pink-400 shadow-2xl">
+              <div className="flex flex-col lg:flex-row gap-6">
+                {/* Mail Box Area */}
+                <div className="flex-1">
                   <div
-                    className="px-4 py-2 border-b flex flex-wrap gap-1"
+                    className="rounded-2xl border shadow-lg overflow-hidden"
                     style={{
-                      borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.2)",
-                      backgroundColor: currentTheme === "white" ? "#f9fafb" : "rgba(0,0,0,0.05)",
+                      backgroundColor: themes[currentTheme].bg,
+                      borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.3)",
                     }}
                   >
-                    {formatButtons.map((btn, index) => (
-                      <button
-                        key={index}
-                        className="p-2 rounded hover:bg-gray-200 transition-colors"
-                        style={{
-                          color: themes[currentTheme].text,
-                          backgroundColor: "transparent",
-                        }}
-                        title={btn.tooltip}
-                        aria-label={btn.tooltip}
-                        onClick={() => console.log(`${btn.tooltip} clicked`)}
-                      >
-                        {btn.icon}
-                      </button>
-                    ))}
-                    <div className="ml-4 flex items-center gap-2">
-                      <select
-                        className="text-sm border rounded px-2 py-1"
-                        style={{
-                          backgroundColor: themes[currentTheme].bg,
-                          color: themes[currentTheme].text,
-                          borderColor: currentTheme === "white" ? "#d1d5db" : "rgba(255,255,255,0.3)",
-                        }}
-                        onChange={handleChange}
-                        name="font"
-                        aria-label="Select font type"
-                      >
-                        <option value="Sans Serif">Sans Serif</option>
-                        <option value="Serif">Serif</option>
-                        <option value="Monospace">Monospace</option>
-                      </select>
+                    {/* Header */}
+                    <div
+                      className="px-4 py-3 border-b"
+                      style={{
+                        borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.2)",
+                        backgroundColor: currentTheme === "white" ? "#f9fafb" : "rgba(0,0,0,0.1)",
+                      }}
+                    >
+                      <div className="flex items-center gap-4">
+                        <motion.button
+                          whileTap={{ scale: 0.95 }}
+                          whileHover={{ scale: 1.02 }}
+                          onClick={handleSubmit}
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors font-medium shadow-lg flex items-center gap-2"
+                          aria-label="Send letter"
+                        >
+                          Send 🚀
+                        </motion.button>
+                      </div>
                     </div>
 
-                    {/* suggestion button*/}
-                    <button
-                      onClick={handleInspire}
-                      className="bg-yellow-200 text-black text-sm px-4 py-2 rounded-lg shadow hover:bg-yellow-300 transition-colors font-medium"
-                      aria-label="Inspire me"
+                    {/* Message Area */}
+                    <div className="p-4">
+                      <textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Write your heartfelt message..."
+                        rows={12}
+                        className="w-full h-full bg-transparent border-none outline-none resize-none text-base leading-relaxed"
+                        style={{
+                          color: themes[currentTheme].text,
+                          minHeight: "300px",
+                        }}
+                        maxLength={1000}
+                        aria-label="Message input"
+                        required
+                      />
+                    </div>
+
+                    {/* Formatting Toolbar */}
+                    <div
+                      className="px-4 py-2 border-b flex flex-wrap gap-1"
+                      style={{
+                        borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.2)",
+                        backgroundColor: currentTheme === "white" ? "#f9fafb" : "rgba(0,0,0,0.05)",
+                      }}
                     >
-                      ✨ Inspire Me
-                    </button>
+                      {formatButtons.map((btn, index) => (
+                        <button
+                          key={index}
+                          className="p-2 rounded hover:bg-gray-200 transition-colors"
+                          style={{
+                            color: themes[currentTheme].text,
+                            backgroundColor: "transparent",
+                          }}
+                          title={btn.tooltip}
+                          aria-label={btn.tooltip}
+                          onClick={() => console.log(`${btn.tooltip} clicked`)}
+                        >
+                          {btn.icon}
+                        </button>
+                      ))}
+                      <div className="ml-4 flex items-center gap-2">
+                        <select
+                          className="text-sm border rounded px-2 py-1"
+                          style={{
+                            backgroundColor: themes[currentTheme].bg,
+                            color: themes[currentTheme].text,
+                            borderColor: currentTheme === "white" ? "#d1d5db" : "rgba(255,255,255,0.3)",
+                          }}
+                          onChange={handleChange}
+                          name="font"
+                          aria-label="Select font type"
+                        >
+                          <option value="Sans Serif">Sans Serif</option>
+                          <option value="Serif">Serif</option>
+                          <option value="Monospace">Monospace</option>
+                        </select>
+                      </div>
+
+                      {/* Suggestion button */}
+                      <button
+                        onClick={handleInspire}
+                        className="bg-yellow-200 text-black text-sm px-4 py-2 rounded-lg shadow hover:bg-yellow-300 transition-colors font-medium"
+                        aria-label="Inspire me"
+                      >
+                        ✨ Inspire Me
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Right Panel */}
-              <div className="w-full lg:w-80 flex flex-col gap-4">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                  <img
-                    src="/assets/placeholder.jpg" // Replace with a static asset in your project
-                    alt="Profile"
-                    className="w-full h-48 rounded-xl object-cover border border-white/40 shadow-md mb-4"
-                  />
-                  <input
-                    type="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-white/30 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-sm"
-                    required
-                    aria-label="Scheduled date"
-                  />
+                {/* Right Panel */}
+                <div className="w-full lg:w-80 flex flex-col gap-4">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <img
+                      src="/assets/placeholder.jpg"
+                      alt="Profile"
+                      className="w-full h-48 rounded-xl object-cover border border-white/40 shadow-md mb-4"
+                    />
+
+                    {/* Date Picker */}
+                    {isMobile ? (
+                      <MobileDatePicker
+                        value={formData.date}
+                        onChange={handleDateChange}
+                        slotProps={{
+                          textField: {
+                            required: true,
+                            className:
+                              "w-full px-4 py-3 rounded-xl border border-white/30 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-sm",
+                            InputProps: {
+                              style: {
+                                color: themes[currentTheme].text,
+                                fontFamily: "Poppins",
+                              },
+                            },
+                            InputLabelProps: {
+                              style: {
+                                color: themes[currentTheme].text,
+                              },
+                            },
+                          },
+                        }}
+                        aria-label="Scheduled date"
+                        label="Select Date"
+                      />
+                    ) : (
+                      <DesktopDatePicker
+                        value={formData.date}
+                        onChange={handleDateChange}
+                        slotProps={{
+                          textField: {
+                            required: true,
+                            className:
+                              "w-full px-4 py-3 rounded-xl border border-white/30 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-sm",
+                            InputProps: {
+                              style: {
+                                color: themes[currentTheme].text,
+                                fontFamily: "Poppins",
+                              },
+                            },
+                            InputLabelProps: {
+                              style: {
+                                color: themes[currentTheme].text,
+                              },
+                            },
+                          },
+                        }}
+                        aria-label="Scheduled date"
+                        label="Select Date"
+                      />
+                    )}
+
+                    {/* Time Picker */}
+                    {isMobile ? (
+                      <MobileTimePicker
+                        value={formData.time}
+                        onChange={handleTimeChange}
+                        slotProps={{
+                          textField: {
+                            required: true,
+                            className:
+                              "w-full px-4 py-3 rounded-xl border border-white/30 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-sm mt-4",
+                            InputProps: {
+                              style: {
+                                color: themes[currentTheme].text,
+                                fontFamily: "Poppins",
+                              },
+                            },
+                            InputLabelProps: {
+                              style: {
+                                color: themes[currentTheme].text,
+                              },
+                            },
+                          },
+                        }}
+                        aria-label="Scheduled time"
+                        label="Select Time"
+                      />
+                    ) : (
+                      <StaticTimePicker
+                        value={formData.time}
+                        onChange={handleTimeChange}
+                        sx={{
+                          "& .MuiPickersLayout-root": {
+                            backgroundColor: "rgba(0,0,0,0.2)",
+                            color: themes[currentTheme].text,
+                            borderRadius: "12px",
+                            border: "1px solid rgba(255,255,255,0.3)",
+                            fontFamily: "Poppins",
+                            marginTop: "16px",
+                          },
+                          "& .MuiPickersToolbar-root": {
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                          },
+                          "& .MuiTimePickerTabs-root": {
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                          },
+                        }}
+                        aria-label="Scheduled time"
+                        label="Select Time"
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Main>
-    </Box>
+        </Main>
+      </Box>
+    </LocalizationProvider>
   );
 };
 
