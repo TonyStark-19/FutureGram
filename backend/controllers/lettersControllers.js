@@ -1,27 +1,21 @@
-const cloudinary = require("../utils/cloudinary");
 const Letter = require("../models/letter");
 
-exports.createLetter = async (req, res) => {
-    try {
-        const { name, email, content, scheduledDate, animeName, animePicUrl } = req.body;
+const createLetter = async (req, res) => {
+  const { email, content, scheduledDate } = req.body;
 
-        const animePic = animePicUrl || "https://i.ibb.co/BBRpLkx/default-anime.jpg";
-        const animeNameFinal = animeName || "Hitori";
+  if (!email || !content || !scheduledDate)
+    return res.status(400).json({ message: "All fields are required" });
 
-        const letter = new Letter({
-            name,
-            email,
-            content,
-            scheduledDate,
-            animePic,
-            animeName: animeNameFinal,
-        });
-
-        await letter.save();
-        res.status(201).json(letter);
-    } catch (err) {
-        console.error("Letter creation error:", err);
-        res.status(500).json({ message: "Server error", error: err });
-    }
+  try {
+    const newLetter = await Letter.create({
+      email,
+      content,
+      scheduledDate,
+    });
+    res.status(201).json(newLetter);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to save letter" });
+  }
 };
->>>>>>> future/main
+
+module.exports = { createLetter };
