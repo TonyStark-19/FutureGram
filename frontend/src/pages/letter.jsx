@@ -1,5 +1,28 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+<<<<<<< HEAD
+import { Sun, Moon, Heart } from "lucide-react";
+import API from "../Api";
+
+const themes = {
+  dark: {
+    bg: "#1a1a1a",
+    text: "#ffffff",
+    icon: <Moon size={18} />,
+  },
+  white: {
+    bg: "#ffffff",
+    text: "#000000",
+    icon: <Sun size={18} />,
+  },
+  rosy: {
+    bg: "#fff0f5",
+    text: "#4b0082",
+    icon: <Heart size={18} />,
+  },
+};
+
+=======
 import { Sun, Moon, Heart, UploadCloud } from "lucide-react";
 import API from "../Api";
 
@@ -16,23 +39,30 @@ const animeImages = [
   { name: "Gojo", url: "/gojo.png" },
 ];
 
+>>>>>>> future/main
 const LetterPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     date: "",
     message: "",
+<<<<<<< HEAD
+  });
+=======
     animeName: animeImages[0].name,
     animePic: animeImages[0].url,
     file: null,
   });
 
+>>>>>>> future/main
   const [theme, setTheme] = useState("rosy");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+<<<<<<< HEAD
+=======
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -46,6 +76,7 @@ const LetterPage = () => {
     }
   };
 
+>>>>>>> future/main
   const inspireMessages = [
     "🌸 Keep blooming, even in the dark.",
     "🚀 You’re stronger than you think.",
@@ -59,6 +90,38 @@ const LetterPage = () => {
   };
 
   const handleSubmit = async (e) => {
+<<<<<<< HEAD
+  e.preventDefault();
+
+  try {
+    const payload = {
+      email: formData.email,
+      content: formData.message,
+      scheduledDate: formData.date,
+    };
+
+    const res = await API.post("/letters", payload); // 🔗 sending to backend
+    alert("Letter sent successfully!");
+    console.log("Saved:", res.data);
+
+    // Clear the form
+    setFormData({
+      name: "",
+      email: "",
+      date: "",
+      message: "",
+    });
+  } catch (err) {
+    console.error("Error:", err.response?.data || err.message);
+    alert("Failed to send letter");
+  }
+};
+
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#d882ca] via-[#fce3ff] to-[#f980e3] flex flex-col items-center justify-center font-poppins px-4 py-12">
+      {/* Quote */}
+=======
     e.preventDefault();
     const data = new FormData();
     data.append("name", formData.name);
@@ -92,15 +155,24 @@ const LetterPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#d882ca] via-[#b050bb] to-[#f980e3] flex flex-col items-center justify-center font-poppins px-4 py-12">
+>>>>>>> future/main
       <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center text-black">
         💭 "Dear me, I hope you’re smiling today. Remember, you planted this seed."
       </h2>
 
+<<<<<<< HEAD
+      {/* Container */}
+=======
+>>>>>>> future/main
       <div className="w-full max-w-6xl p-4 sm:p-6 rounded-3xl border border-dashed border-pink-400 bg-gradient-to-br from-purple-600 via-pink-500 to-black shadow-lg">
         <div className="flex flex-col sm:flex-row gap-6">
           {/* Message Box */}
           <div
+<<<<<<< HEAD
+            className="flex-1 rounded-2xl border border-white/30 p-4 transition-all duration-300"
+=======
             className="flex-1 rounded-2xl border border-white/30 p-4"
+>>>>>>> future/main
             style={{
               backgroundColor: themes[theme].bg,
               color: themes[theme].text,
@@ -116,6 +188,11 @@ const LetterPage = () => {
               className="w-full h-full bg-transparent border-none outline-none resize-none text-base"
               style={{ color: themes[theme].text }}
             />
+<<<<<<< HEAD
+
+            {/* Theme Icons + Inspire */}
+=======
+>>>>>>> future/main
             <div className="mt-4 flex items-center gap-3 flex-wrap">
               <span className="text-sm text-white">Theme:</span>
               {Object.entries(themes).map(([key, value]) => (
@@ -129,6 +206,10 @@ const LetterPage = () => {
                   {value.icon}
                 </button>
               ))}
+<<<<<<< HEAD
+
+=======
+>>>>>>> future/main
               <button
                 onClick={handleInspire}
                 className="bg-yellow-200 text-black text-xs px-3 py-1 rounded-md shadow hover:bg-yellow-300"
@@ -138,6 +219,31 @@ const LetterPage = () => {
             </div>
           </div>
 
+<<<<<<< HEAD
+          {/* Input Fields */}
+          <div className="w-full sm:w-64 flex flex-col justify-between items-center gap-4">
+            <img
+              src="/hitori.jpg"
+              alt="Profile"
+              className="w-40 h-40 rounded-xl object-cover border border-white/40 shadow-md"
+            />
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-[#080808] text-white focus:outline-none"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-[#1a1a1a] text-white focus:outline-none"
+            />
+=======
           {/* Form Side */}
           <div className="w-full sm:w-64 flex flex-col justify-between items-center gap-4">
             <img
@@ -203,12 +309,17 @@ const LetterPage = () => {
               className="w-full px-4 py-2 rounded-xl border border-white/30 bg-[#1a1a1a] text-white"
             />
 
+>>>>>>> future/main
             <input
               type="date"
               name="date"
               value={formData.date}
               onChange={handleChange}
+<<<<<<< HEAD
+              className="w-full px-4 py-2 rounded-xl border border-white/30 bg-[#1a1a1a] text-white focus:outline-none"
+=======
               className="w-full px-4 py-2 rounded-xl border border-white/30 bg-[#1a1a1a] text-white"
+>>>>>>> future/main
             />
 
             <motion.button

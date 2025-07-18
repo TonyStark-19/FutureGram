@@ -1,3 +1,4 @@
+const cloudinary = require("../utils/cloudinary");
 const Letter = require("../models/letter");
 
 exports.createLetter = async (req, res) => {
@@ -23,3 +24,4 @@ exports.createLetter = async (req, res) => {
         res.status(500).json({ message: "Server error", error: err });
     }
 };
+>>>>>>> future/main

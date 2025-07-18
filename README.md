@@ -1,12 +1,4 @@
 
-# Project Title
-
-A brief description of what this project does and who it's for
-
-Absolutely, Prarthana! Here's a clean and professional brief about **FutureGram**, along with a clear explanation of its directory structure.
-
----
-
 ## 🌟 Project Name: **FutureGram**
 
 **FutureGram** is a MERN-stack-based web application that allows users to write heartfelt letters to their *future selves*. It’s an emotionally thoughtful productivity app that helps users reflect on their goals, express gratitude, and stay motivated over time by scheduling messages that will be emailed to them later.

@@ -12,6 +12,9 @@ cron.schedule("0 * * * *", async () => {
     });
 
     for (const letter of letters) {
+<<<<<<< HEAD
+      await sendEmail(letter.email, letter.content);
+=======
       const html = `
         <div style="font-family: Poppins, sans-serif; text-align: center;">
           <h2>Dear ${letter.name},</h2>
@@ -23,6 +26,7 @@ cron.schedule("0 * * * *", async () => {
 
       await sendEmail(letter.email, "Your Letter from the Past 💌", html);
 
+>>>>>>> future/main
       letter.sent = true;
       await letter.save();
       console.log(`✅ Sent letter to ${letter.email}`);
@@ -31,4 +35,7 @@ cron.schedule("0 * * * *", async () => {
     console.error("❌ Cron error:", err);
   }
 });
+<<<<<<< HEAD
+=======
 module.exports = cron;
+>>>>>>> future/main
