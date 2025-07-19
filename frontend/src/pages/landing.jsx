@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ScreenshotShowcase from "../components/screenshot";
 import FooterSection from "../components/footer";
-import Header from "../components/Header";
+import Header from "../components/header";
 
 const LandingPage = () => {
   const navigate = useNavigate();
