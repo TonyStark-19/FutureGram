@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon, Heart, ChevronsLeft, ChevronsRight, Bold, Italic, Underline } from "lucide-react";
 import API from "../Api";
-import Header from "../components/Header";
+import Header from "../components/header";
 import {
   Drawer,
   IconButton,
