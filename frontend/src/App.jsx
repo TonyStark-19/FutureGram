@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div className="bg-[#121212] min-h-screen">
       {/* Header will show on all pages */}
-      <Header />
+      {/* Removing Header from here to get more flexibility in customization, instead I have added in every page*/}
 
       <Routes>
         <Route path="/" element={<LandingPage />} />
