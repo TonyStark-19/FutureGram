@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import BackgroundMotion from "../components/backgroundmotion"; // ✅ uses same wave bg
+import BackgroundMotion from "../components/backgroundmotion";
 import { motion } from "framer-motion";
 import Api from '../Api'
 import Header from "../components/Header";
-
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -16,29 +15,30 @@ const RegisterPage = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  try {
-    const res = await Api.post("/auth/register", form);
-    const { token, user } = res.data;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    localStorage.setItem("token", token);
+    try {
+      const res = await Api.post("/auth/register", form);
+      const { token, user } = res.data;
 
-    setAlert({ type: "success", message: `💖 Registered, ${user.username}!` });
-    setTimeout(() => {
-      navigate("/letter");
-    }, 1500);
-  } catch (err) {
-    setAlert({
-      type: "error",
-      message:
-        err.response?.data?.message ||
-        "⚠ Registration failed. Please check your credentials.",
-    });
-  }
-};
+      localStorage.setItem("token", token);
+      localStorage.setItem("userEmail", form.email); // Store email in localStorage
 
+      setAlert({ type: "success", message: `💖 Registered, ${user.username}!` });
+      setTimeout(() => {
+        navigate("/letter");
+      }, 1500);
+    } catch (err) {
+      setAlert({
+        type: "error",
+        message:
+          err.response?.data?.message ||
+          "⚠ Registration failed. Please check your credentials.",
+      });
+    }
+  };
 
   return (
     <>
@@ -46,28 +46,24 @@ const handleSubmit = async (e) => {
       <div
         className="relative min-h-screen flex items-center justify-center text-black font-poppins overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, #f080e7, #ff69b4)", // 🎨 matches login
+          background: "linear-gradient(135deg, #f080e7, #ff69b4)",
         }}
       >
-        {/* 🌊 Background Waves */}
         <BackgroundMotion />
-
         {alert.message && (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      className={`mb-4 px-4 py-2 rounded-xl text-sm font-medium text-center ${
-        alert.type === "success"
-          ? "bg-pink-200 text-pink-800 shadow-[0_0_20px_#ff9ddc]"
-          : "bg-red-100 text-red-600 shadow-[0_0_20px_#f08080]"
-      }`}
-    >
-      {alert.message}
-    </motion.div>
-  )}
-
-
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className={`mb-4 px-4 py-2 rounded-xl text-sm font-medium text-center ${
+              alert.type === "success"
+                ? "bg-pink-200 text-pink-800 shadow-[0_0_20px_#ff9ddc]"
+                : "bg-red-100 text-red-600 shadow-[0_0_20px_#f08080]"
+            }`}
+          >
+            {alert.message}
+          </motion.div>
+        )}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -76,9 +72,8 @@ const handleSubmit = async (e) => {
         >
           <h2 className="text-3xl font-bold mb-6 text-center">Join Us ✨</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name */}
             <div>
-              <label htmlFor="name" className="block mb-1 font-medium">
+              <label htmlFor="username" className="block mb-1 font-medium">
                 Name
               </label>
               <input
@@ -90,8 +85,6 @@ const handleSubmit = async (e) => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f080e7]"
               />
             </div>
-
-            {/* Email */}
             <div>
               <label htmlFor="email" className="block mb-1 font-medium">
                 Email
@@ -105,8 +98,6 @@ const handleSubmit = async (e) => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f080e7]"
               />
             </div>
-
-            {/* Password */}
             <div>
               <label htmlFor="password" className="block mb-1 font-medium">
                 Password
@@ -128,8 +119,6 @@ const handleSubmit = async (e) => {
                 </span>
               </div>
             </div>
-
-            {/* Register Button */}
             <button
               type="submit"
               className="w-full bg-[#140d14] text-white py-2 rounded-xl 
@@ -140,7 +129,6 @@ const handleSubmit = async (e) => {
               Register
             </button>
           </form>
-
           <p className="mt-6 text-center text-sm">
             Already have an account?{" "}
             <span

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon, Heart, ChevronsLeft, ChevronsRight, Bold, Italic, Underline } from "lucide-react";
 import API from "../Api";
@@ -155,12 +155,19 @@ const LetterPage = () => {
     name: "",
     email: "",
     date: null,
-    time: dayjs().startOf("hour"),
     message: "",
-    // selectedCategory: "Beauty",
+    selectedCategory: "Anime",
   });
   const [currentTheme, setCurrentTheme] = useState("rosy");
   const [open, setOpen] = useState(false);
+
+  // Retrieve email from localStorage on component mount
+  useEffect(() => {
+    const userEmail = localStorage.getItem("userEmail");
+    if (userEmail) {
+      setFormData((prev) => ({ ...prev, email: userEmail }));
+    }
+  }, []);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -211,22 +218,22 @@ const LetterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.message || !formData.date || !formData.time) {
-      alert("Please fill in all required fields, including date and time");
+    if (!formData.email || !formData.message || !formData.date) {
+      alert("Please fill in all required fields, including date");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email address");
+      alert("Invalid email address");
       return;
     }
 
+    // Set default time to 9:00 AM
     const date = dayjs(formData.date);
-    const time = dayjs(formData.time);
     const scheduledDateTime = date
-      .set("hour", time.hour())
-      .set("minute", time.minute())
+      .set("hour", 9)
+      .set("minute", 0)
       .set("second", 0)
       .toISOString();
 
@@ -237,13 +244,17 @@ const LetterPage = () => {
         scheduledDate: scheduledDateTime,
         category: formData.selectedCategory,
       };
-      const res = await API.post("/letters", payload);
-      alert("Letter sent successfully!");
+      const res = await API.post("/letters", payload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      alert("Letter scheduled successfully!");
       console.log("Saved:", res.data);
-      setFormData({ name: "", email: "", date: null, time: null, message: ""});
+      setFormData({ name: "", email: formData.email, date: null, message: "", selectedCategory: "Anime" });
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
-      alert("Failed to send letter");
+      alert("Failed to schedule letter");
     }
   };
 
@@ -254,7 +265,6 @@ const LetterPage = () => {
     onClick: () => setCurrentTheme(key),
   }));
 
-  // Image selector categories and sample images
   const categories = [
     {
       name: "Anime",
@@ -268,7 +278,7 @@ const LetterPage = () => {
       ],
     },
   ];
-  
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ display: "flex" }}>
@@ -336,7 +346,6 @@ const LetterPage = () => {
             </h2>
             <div className="w-full max-w-6xl bg-gradient-to-br from-purple-600 via-pink-500 to-purple-800 p-6 rounded-3xl border border-dashed border-pink-400 shadow-2xl">
               <div className="flex flex-col lg:flex-row gap-6">
-                {/* Mail Box Area */}
                 <div className="flex-1">
                   <div
                     className="flex flex-col rounded-2xl border shadow-lg overflow-hidden min-h-full"
@@ -345,7 +354,6 @@ const LetterPage = () => {
                       borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.3)",
                     }}
                   >
-                    {/* Header */}
                     <div
                       className="px-4 py-3 border-b"
                       style={{
@@ -365,9 +373,20 @@ const LetterPage = () => {
                         </motion.button>
                       </div>
                     </div>
-
-                    {/* Message Area */}
                     <div className="p-4 flex-1">
+                      {/* <div className="mb-4">
+                        <label htmlFor="email" className="block mb-1 font-medium text-white">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          readOnly
+                          className="w-full px-4 py-3 rounded-xl border border-white/30 bg-black/20 text-white focus:outline-none"
+                          aria-label="User email"
+                        />
+                      </div> */}
                       <textarea
                         name="message"
                         value={formData.message}
@@ -382,8 +401,6 @@ const LetterPage = () => {
                         required
                       />
                     </div>
-
-                    {/* Formatting Toolbar */}
                     <div
                       className="px-4 py-2 border-b flex flex-wrap gap-1"
                       style={{
@@ -423,8 +440,6 @@ const LetterPage = () => {
                           <option value="Monospace">Monospace</option>
                         </select>
                       </div>
-
-                      {/* Suggestion button */}
                       <button
                         onClick={handleInspire}
                         className="bg-yellow-200 text-black text-sm px-4 py-2 rounded-lg shadow hover:bg-yellow-300 transition-colors font-medium"
@@ -435,11 +450,8 @@ const LetterPage = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Right Panel */}
                 <div className="min-w-[400px] lg:w-80 flex flex-col gap-4">
                   <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                    {/* Date Picker */}
                     {isMobile ? (
                       <MobileDatePicker
                         value={formData.date}
@@ -492,8 +504,6 @@ const LetterPage = () => {
                       />
                     )}
                   </div>
-
-                  {/* Image Selector with Swiper */}
                   <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                     <h3 className="text-lg font-semibold mb-4 text-white">Choose Anime</h3>
                     <div className="flex flex-col gap-4">
