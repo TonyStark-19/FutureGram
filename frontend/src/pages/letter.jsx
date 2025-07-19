@@ -150,8 +150,8 @@ const LetterPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    date: null, // Store as Dayjs object or null
-    time: null, // Store as Dayjs object or null
+    date: null,
+    time: dayjs().startOf("hour"), // Initialize with current hour
     message: "",
   });
   const [currentTheme, setCurrentTheme] = useState("rosy");
@@ -185,7 +185,7 @@ const LetterPage = () => {
   const handleTimeChange = (newTime) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      time: newTime,
+      time: newTime ? dayjs(newTime) : null,
     }));
   };
 
@@ -327,7 +327,7 @@ const LetterPage = () => {
                 {/* Mail Box Area */}
                 <div className="flex-1">
                   <div
-                    className="rounded-2xl border shadow-lg overflow-hidden"
+                    className="flex flex-col rounded-2xl border shadow-lg overflow-hidden min-h-full"
                     style={{
                       backgroundColor: themes[currentTheme].bg,
                       borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.3)",
@@ -349,25 +349,23 @@ const LetterPage = () => {
                           className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors font-medium shadow-lg flex items-center gap-2"
                           aria-label="Send letter"
                         >
-                          Send 🚀
+                          Send
                         </motion.button>
                       </div>
                     </div>
 
                     {/* Message Area */}
-                    <div className="p-4">
+                    <div className="p-4 flex-1">
                       <textarea
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
                         placeholder="Write your heartfelt message..."
-                        rows={12}
-                        className="w-full h-full bg-transparent border-none outline-none resize-none text-base leading-relaxed"
+                        rows={15}
+                        className="w-full bg-transparent border-none outline-none resize-none text-base leading-relaxed"
                         style={{
                           color: themes[currentTheme].text,
-                          minHeight: "300px",
                         }}
-                        maxLength={1000}
                         aria-label="Message input"
                         required
                       />
@@ -427,13 +425,8 @@ const LetterPage = () => {
                 </div>
 
                 {/* Right Panel */}
-                <div className="w-full lg:w-80 flex flex-col gap-4">
+                <div className="min-w-[400px] lg:w-80 flex flex-col gap-4">
                   <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                    <img
-                      src="/assets/placeholder.jpg"
-                      alt="Profile"
-                      className="w-full h-48 rounded-xl object-cover border border-white/40 shadow-md mb-4"
-                    />
 
                     {/* Date Picker */}
                     {isMobile ? (
@@ -489,7 +482,7 @@ const LetterPage = () => {
                     )}
 
                     {/* Time Picker */}
-                    {isMobile ? (
+                    {/* {isMobile ? (
                       <MobileTimePicker
                         value={formData.time}
                         onChange={handleTimeChange}
@@ -515,29 +508,112 @@ const LetterPage = () => {
                         label="Select Time"
                       />
                     ) : (
-                      <StaticTimePicker
-                        value={formData.time}
-                        onChange={handleTimeChange}
-                        sx={{
-                          "& .MuiPickersLayout-root": {
-                            backgroundColor: "rgba(0,0,0,0.2)",
-                            color: themes[currentTheme].text,
-                            borderRadius: "12px",
-                            border: "1px solid rgba(255,255,255,0.3)",
-                            fontFamily: "Poppins",
-                            marginTop: "16px",
-                          },
-                          "& .MuiPickersToolbar-root": {
-                            backgroundColor: "rgba(255,255,255,0.1)",
-                          },
-                          "& .MuiTimePickerTabs-root": {
-                            backgroundColor: "rgba(255,255,255,0.1)",
-                          },
-                        }}
-                        aria-label="Scheduled time"
-                        label="Select Time"
-                      />
-                    )}
+                      <div className="mt-4">
+                        <StaticTimePicker
+                          value={formData.time}
+                          onChange={handleTimeChange}
+                          className="rounded-3xl"
+                          sx={{
+                              // Upper Section - Red gradient background to match the design
+                              '& .MuiPickersToolbar-root': {
+                                backgroundColor: "#f77f00", // Orange gradient background
+                              },
+                                  '& .MuiTypography-root': {
+                                    color: "#ffffff", // White timer text for good contrast
+                                    fontWeight: "600", // Slightly bolder text
+                                  },
+                                  '& .MuiTypography-root[data-selected]': {
+                                    color: "#ffffff", // White active timer text
+                                    textShadow: "0 0 8px rgba(255, 255, 255, 0.3)", // Subtle glow effect
+                                  },
+                                  '& .MuiIconButton-root': {
+                                    color: "#ffffff", // White arrows to match the text
+                                    '&:hover': {
+                                      backgroundColor: "rgba(255, 255, 255, 0.1)", // Subtle hover effect
+                                    },
+                                  },
+
+                              // Middle Section - Clean white/light background
+                              '& .MuiPickersLayout-contentWrapper': {
+                                backgroundColor: "#f8f9fa", // Light gray background for better contrast
+                                borderRadius: "0", // No border radius for middle section
+                              },
+                                  '& .MuiClock-clock': {
+                                    backgroundColor: "#ffffff", // White clock face background
+                                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+                                    borderRadius: "50%", // Ensure circular shape
+                                  },
+                                      '& .MuiClockNumber-root': {
+                                        color: "#495057", // Dark gray for better readability
+                                        fontWeight: "500", // Medium weight for clarity
+                                        fontSize: "1rem", // Appropriate size
+                                      },
+                                          '& .MuiClockPointer-thumb': {
+                                            backgroundColor: "#000", // Red pointer pin to match upper section
+                                            borderColor: "#e63946", // Matching border
+                                            boxShadow: "0 2px 8px rgba(230, 57, 70, 0.3)", // Subtle red glow
+                                          },
+                                          '& .MuiClockPointer-root': {
+                                            backgroundColor: "#e63946", // Red clock hand
+                                            '&::before': {
+                                              backgroundColor: "#e63946", // Ensure full hand is red
+                                            },
+                                          },
+                                          '& .MuiClock-pin': {
+                                            backgroundColor: "#e63946", // Red center pin
+                                            boxShadow: "0 0 4px rgba(230, 57, 70, 0.4)", // Subtle glow
+                                          },
+
+                              // Bottom Section - Dark background to match the design
+                              '& .MuiDialogActions-root': {
+                                backgroundColor: "#2c3e50", // Dark blue-gray background
+                                borderRadius: "0 0 12px 12px", // Rounded bottom corners
+                                padding: "12px 24px", // Better padding
+                              },
+                                  '& .MuiButton-root': {
+                                    color: "#8ecae6", // Light blue button text
+                                    backgroundColor: "transparent", // Transparent background
+                                    fontWeight: "600", // Bolder text
+                                    textTransform: "uppercase", // Uppercase for better UI
+                                    letterSpacing: "0.5px", // Slight spacing
+                                    '&:hover': {
+                                      backgroundColor: "rgba(142, 202, 230, 0.1)", // Subtle hover effect
+                                      color: "#5fb3d4", // Slightly darker on hover
+                                    },
+                                  },
+                                  '& .MuiTouchRipple-root': {
+                                    color: "#8ecae6", // Light blue ripple effect
+                                  },
+
+                              // Additional enhancements
+                              '& .MuiPaper-root': {
+                                borderRadius: "12px", // Rounded corners for the entire picker
+                                overflow: "hidden", // Ensure clean edges
+                                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)", // Enhanced shadow
+                              },
+                              
+                              // Selected time highlighting
+                              '& .MuiClockNumber-root.Mui-selected': {
+                                backgroundColor: "#e63946", // Red background for selected number
+                                color: "#ffffff", // White text for selected
+                                borderRadius: "50%", // Circular selection
+                              },
+                              
+                              // AM/PM button styling
+                              '& .MuiToggleButton-root': {
+                                color: "#ffffff", // White text
+                                borderColor: "rgba(255, 255, 255, 0.3)", // Subtle border
+                                '&.Mui-selected': {
+                                  backgroundColor: "rgba(255, 255, 255, 0.2)", // Subtle selection
+                                  color: "#ffffff", // Keep text white
+                                },
+                              },
+                          }}
+                          aria-label="Scheduled time"
+                          label="Select Time"
+                        />
+                      </div>
+                    )} */}
                   </div>
                 </div>
               </div>
