@@ -157,7 +157,7 @@ const LetterPage = () => {
     date: null,
     time: dayjs().startOf("hour"),
     message: "",
-    selectedCategory: "Beauty",
+    // selectedCategory: "Beauty",
   });
   const [currentTheme, setCurrentTheme] = useState("rosy");
   const [open, setOpen] = useState(false);
@@ -240,7 +240,7 @@ const LetterPage = () => {
       const res = await API.post("/letters", payload);
       alert("Letter sent successfully!");
       console.log("Saved:", res.data);
-      setFormData({ name: "", email: "", date: null, time: null, message: "", selectedCategory: "Beauty" });
+      setFormData({ name: "", email: "", date: null, time: null, message: ""});
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
       alert("Failed to send letter");
@@ -257,21 +257,14 @@ const LetterPage = () => {
   // Image selector categories and sample images
   const categories = [
     {
-      name: "Beauty",
+      name: "Anime",
       mainImage: "/gojo.png",
       sideImages: [
+        "/hitori.jpg",
+        "/naruto.png",
         "/gojo.png",
-        "/gojo.png",
-        "/gojo.png",
-      ],
-    },
-    {
-      name: "Nature",
-      mainImage: "/gojo.png",
-      sideImages: [
-        "/gojo.png",
-        "/gojo.png",
-        "/gojo.png",
+        "/hitori.jpg",
+        "/naruto.png",
       ],
     },
   ];
@@ -502,12 +495,12 @@ const LetterPage = () => {
 
                   {/* Image Selector with Swiper */}
                   <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                    <h3 className="text-lg font-semibold mb-4 text-white">Select Category</h3>
+                    <h3 className="text-lg font-semibold mb-4 text-white">Choose Anime</h3>
                     <div className="flex flex-col gap-4">
                       {categories.map((category) => (
                         <div
                           key={category.name}
-                          className={`cursor-pointer rounded-xl overflow-hidden shadow-lg ${
+                          className={`rounded-xl overflow-hidden shadow-lg pb-8 ${
                             formData.selectedCategory === category.name ? "border-2 border-purple-400" : ""
                           }`}
                           onClick={() => handleCategoryChange(category.name)}
@@ -541,10 +534,6 @@ const LetterPage = () => {
                               <span className="text-gray-500">No images available</span>
                             </div>
                           )}
-                          <div className="flex justify-between text-white px-2 py-1">
-                            <span className="font-bold text-lg">{category.name}</span>
-                            <span className="text-sm">TO INSPIRE YOU</span>
-                          </div>
                         </div>
                       ))}
                     </div>
