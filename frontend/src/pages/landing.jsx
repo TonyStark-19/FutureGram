@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ScreenshotShowcase from "../components/screenshot";
 import FooterSection from "../components/footer";
-import Header from "../components/header";
+import Header from "../components/Header";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const LandingPage = () => {
         {/* Hero Section */}
         <div className="relative z-20 flex flex-col items-center justify-center px-10 pt-40 pb-16 text-center">
           <h1 className="text-5xl sm:text-6xl font-bold mb-4 drop-shadow-xl">
-            Dear Future Me ✉️
+            Dear Future Me ✉
           </h1>
           <p className="text-lg sm:text-xl max-w-xl mb-10">
             Write a letter to your future self. Reflect, dream, and send it through time.

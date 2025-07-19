@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import BackgroundMotion from "../components/backgroundmotion"; 
 import { motion } from "framer-motion";
 import Api from '../Api'
-import Header from "../components/header";
+import Header from "../components/Header";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const LoginPage = () => {
       type: "error",
       message:
         err.response?.data?.message ||
-        "⚠️ Login failed. Please check your credentials.",
+        "⚠ Login failed. Please check your credentials.",
     });
   }
 };
@@ -95,7 +95,6 @@ const LoginPage = () => {
               />
             </div>
 
-<<<<<<< HEAD
             {/* Password */}
             <div>
               <label htmlFor="password" className="block mb-1 font-medium">
@@ -118,18 +117,6 @@ const LoginPage = () => {
                 </span>
               </div>
             </div>
-=======
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full bg-[#140d14] text-white py-2 rounded-xl shadow-[0_0_30px_rgba(255,255,255,0.2)]
- hover:bg-[#4f4d4e] shadow-md transition duration-300 hover:shadow-[0_0_20px_#f080e7]
-"
-          >
-            Log In
-          </button>
-        </form>
->>>>>>> abecdfd8d1c535b0eb7dfa9daea6a2158dc1b5d6
 
             {/* Submit */}
             <button

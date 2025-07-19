@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import BackgroundMotion from "../components/backgroundmotion"; // ✅ uses same wave bg
 import { motion } from "framer-motion";
 import Api from '../Api'
-import Header from "../components/header";
+import Header from "../components/Header";
 
 
 const RegisterPage = () => {
@@ -25,7 +25,7 @@ const handleSubmit = async (e) => {
 
     localStorage.setItem("token", token);
 
-    setAlert({ type: "success", message: `💖 Registered!, ${user.username}!` });
+    setAlert({ type: "success", message: `💖 Registered, ${user.username}!` });
     setTimeout(() => {
       navigate("/letter");
     }, 1500);
@@ -34,7 +34,7 @@ const handleSubmit = async (e) => {
       type: "error",
       message:
         err.response?.data?.message ||
-        "⚠️ Registration failed. Please check your credentials.",
+        "⚠ Registration failed. Please check your credentials.",
     });
   }
 };
