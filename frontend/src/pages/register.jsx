@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import BackgroundMotion from "../components/backgroundmotion";
 import { motion } from "framer-motion";
 import Api from '../Api'
-import Header from "../components/Header";
+import Header from "../components/header";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
