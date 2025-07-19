@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Sun, Moon, Heart, Home, Mail, ChevronsLeft, ChevronsRight, Bold, Italic, Underline } from "lucide-react";
-import API from "../Api"; 
+import { Sun, Moon, Heart, ChevronsLeft, ChevronsRight, Bold, Italic, Underline } from "lucide-react";
+import API from "../Api";
 import Header from "../components/Header";
 import {
   Drawer,
@@ -19,9 +19,13 @@ import {
   Tooltip,
   useMediaQuery,
 } from "@mui/material";
-import { LocalizationProvider, DesktopDatePicker, MobileDatePicker, StaticTimePicker, MobileTimePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider, DesktopDatePicker, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCards } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-cards";
 
 // Theme configuration
 const themes = {
@@ -151,8 +155,9 @@ const LetterPage = () => {
     name: "",
     email: "",
     date: null,
-    time: dayjs().startOf("hour"), // Initialize with current hour
+    time: dayjs().startOf("hour"),
     message: "",
+    selectedCategory: "Beauty",
   });
   const [currentTheme, setCurrentTheme] = useState("rosy");
   const [open, setOpen] = useState(false);
@@ -167,7 +172,6 @@ const LetterPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Enhanced input sanitization
     const sanitizedValue = value.replace(/[<>]/g, "").trim();
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -182,10 +186,10 @@ const LetterPage = () => {
     }));
   };
 
-  const handleTimeChange = (newTime) => {
+  const handleCategoryChange = (category) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      time: newTime ? dayjs(newTime) : null,
+      selectedCategory: category,
     }));
   };
 
@@ -207,20 +211,17 @@ const LetterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!formData.email || !formData.message || !formData.date || !formData.time) {
       alert("Please fill in all required fields, including date and time");
       return;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       alert("Please enter a valid email address");
       return;
     }
 
-    // Combine date and time into ISO string
     const date = dayjs(formData.date);
     const time = dayjs(formData.time);
     const scheduledDateTime = date
@@ -234,21 +235,17 @@ const LetterPage = () => {
         email: formData.email,
         content: formData.message,
         scheduledDate: scheduledDateTime,
+        category: formData.selectedCategory,
       };
       const res = await API.post("/letters", payload);
       alert("Letter sent successfully!");
       console.log("Saved:", res.data);
-      setFormData({ name: "", email: "", date: null, time: null, message: "" });
+      setFormData({ name: "", email: "", date: null, time: null, message: "", selectedCategory: "Beauty" });
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
       alert("Failed to send letter");
     }
   };
-
-  const menuItems = [
-    { icon: <Home size={20} />, text: "Home", key: "home" },
-    { icon: <Mail size={20} />, text: "Letters", key: "letters" },
-  ];
 
   const themeItems = Object.entries(themes).map(([key, value]) => ({
     icon: value.icon,
@@ -256,6 +253,28 @@ const LetterPage = () => {
     key,
     onClick: () => setCurrentTheme(key),
   }));
+
+  // Image selector categories and sample images
+  const categories = [
+    {
+      name: "Beauty",
+      mainImage: "/gojo.png",
+      sideImages: [
+        "/gojo.png",
+        "/gojo.png",
+        "/gojo.png",
+      ],
+    },
+    {
+      name: "Nature",
+      mainImage: "/gojo.png",
+      sideImages: [
+        "/gojo.png",
+        "/gojo.png",
+        "/gojo.png",
+      ],
+    },
+  ];
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -427,7 +446,6 @@ const LetterPage = () => {
                 {/* Right Panel */}
                 <div className="min-w-[400px] lg:w-80 flex flex-col gap-4">
                   <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-
                     {/* Date Picker */}
                     {isMobile ? (
                       <MobileDatePicker
@@ -480,140 +498,56 @@ const LetterPage = () => {
                         label="Select Date"
                       />
                     )}
+                  </div>
 
-                    {/* Time Picker */}
-                    {/* {isMobile ? (
-                      <MobileTimePicker
-                        value={formData.time}
-                        onChange={handleTimeChange}
-                        slotProps={{
-                          textField: {
-                            required: true,
-                            className:
-                              "w-full px-4 py-3 rounded-xl border border-white/30 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-sm mt-4",
-                            InputProps: {
-                              style: {
-                                color: themes[currentTheme].text,
-                                fontFamily: "Poppins",
-                              },
-                            },
-                            InputLabelProps: {
-                              style: {
-                                color: themes[currentTheme].text,
-                              },
-                            },
-                          },
-                        }}
-                        aria-label="Scheduled time"
-                        label="Select Time"
-                      />
-                    ) : (
-                      <div className="mt-4">
-                        <StaticTimePicker
-                          value={formData.time}
-                          onChange={handleTimeChange}
-                          className="rounded-3xl"
-                          sx={{
-                              // Upper Section - Red gradient background to match the design
-                              '& .MuiPickersToolbar-root': {
-                                backgroundColor: "#f77f00", // Orange gradient background
-                              },
-                                  '& .MuiTypography-root': {
-                                    color: "#ffffff", // White timer text for good contrast
-                                    fontWeight: "600", // Slightly bolder text
-                                  },
-                                  '& .MuiTypography-root[data-selected]': {
-                                    color: "#ffffff", // White active timer text
-                                    textShadow: "0 0 8px rgba(255, 255, 255, 0.3)", // Subtle glow effect
-                                  },
-                                  '& .MuiIconButton-root': {
-                                    color: "#ffffff", // White arrows to match the text
-                                    '&:hover': {
-                                      backgroundColor: "rgba(255, 255, 255, 0.1)", // Subtle hover effect
-                                    },
-                                  },
-
-                              // Middle Section - Clean white/light background
-                              '& .MuiPickersLayout-contentWrapper': {
-                                backgroundColor: "#f8f9fa", // Light gray background for better contrast
-                                borderRadius: "0", // No border radius for middle section
-                              },
-                                  '& .MuiClock-clock': {
-                                    backgroundColor: "#ffffff", // White clock face background
-                                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-                                    borderRadius: "50%", // Ensure circular shape
-                                  },
-                                      '& .MuiClockNumber-root': {
-                                        color: "#495057", // Dark gray for better readability
-                                        fontWeight: "500", // Medium weight for clarity
-                                        fontSize: "1rem", // Appropriate size
-                                      },
-                                          '& .MuiClockPointer-thumb': {
-                                            backgroundColor: "#000", // Red pointer pin to match upper section
-                                            borderColor: "#e63946", // Matching border
-                                            boxShadow: "0 2px 8px rgba(230, 57, 70, 0.3)", // Subtle red glow
-                                          },
-                                          '& .MuiClockPointer-root': {
-                                            backgroundColor: "#e63946", // Red clock hand
-                                            '&::before': {
-                                              backgroundColor: "#e63946", // Ensure full hand is red
-                                            },
-                                          },
-                                          '& .MuiClock-pin': {
-                                            backgroundColor: "#e63946", // Red center pin
-                                            boxShadow: "0 0 4px rgba(230, 57, 70, 0.4)", // Subtle glow
-                                          },
-
-                              // Bottom Section - Dark background to match the design
-                              '& .MuiDialogActions-root': {
-                                backgroundColor: "#2c3e50", // Dark blue-gray background
-                                borderRadius: "0 0 12px 12px", // Rounded bottom corners
-                                padding: "12px 24px", // Better padding
-                              },
-                                  '& .MuiButton-root': {
-                                    color: "#8ecae6", // Light blue button text
-                                    backgroundColor: "transparent", // Transparent background
-                                    fontWeight: "600", // Bolder text
-                                    textTransform: "uppercase", // Uppercase for better UI
-                                    letterSpacing: "0.5px", // Slight spacing
-                                    '&:hover': {
-                                      backgroundColor: "rgba(142, 202, 230, 0.1)", // Subtle hover effect
-                                      color: "#5fb3d4", // Slightly darker on hover
-                                    },
-                                  },
-                                  '& .MuiTouchRipple-root': {
-                                    color: "#8ecae6", // Light blue ripple effect
-                                  },
-
-                              // Additional enhancements
-                              '& .MuiPaper-root': {
-                                borderRadius: "12px", // Rounded corners for the entire picker
-                                overflow: "hidden", // Ensure clean edges
-                                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.15)", // Enhanced shadow
-                              },
-                              
-                              // Selected time highlighting
-                              '& .MuiClockNumber-root.Mui-selected': {
-                                backgroundColor: "#e63946", // Red background for selected number
-                                color: "#ffffff", // White text for selected
-                                borderRadius: "50%", // Circular selection
-                              },
-                              
-                              // AM/PM button styling
-                              '& .MuiToggleButton-root': {
-                                color: "#ffffff", // White text
-                                borderColor: "rgba(255, 255, 255, 0.3)", // Subtle border
-                                '&.Mui-selected': {
-                                  backgroundColor: "rgba(255, 255, 255, 0.2)", // Subtle selection
-                                  color: "#ffffff", // Keep text white
-                                },
-                              },
-                          }}
-                          aria-label="Scheduled time"
-                          label="Select Time"
-                        />
-                      </div>
-                    )} */}
+                  {/* Image Selector with Swiper */}
+                  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                    <h3 className="text-lg font-semibold mb-4 text-white">Select Category</h3>
+                    <div className="flex flex-col gap-4">
+                      {categories.map((category) => (
+                        <div
+                          key={category.name}
+                          className={`cursor-pointer rounded-xl overflow-hidden shadow-lg ${
+                            formData.selectedCategory === category.name ? "border-2 border-purple-400" : ""
+                          }`}
+                          onClick={() => handleCategoryChange(category.name)}
+                        >
+                          {category.sideImages.length > 0 ? (
+                            <Swiper
+                              effect="cards"
+                              grabCursor={true}
+                              centeredSlides={true}
+                              loop={category.sideImages.length > 1}
+                              lazyPreload={true}
+                              className="w-[240px] h-[320px]"
+                              modules={[EffectCards]}
+                            >
+                              {category.sideImages.map((img, index) => (
+                                <SwiperSlide key={index} className="rounded-[18px] overflow-hidden">
+                                  <img
+                                    src={img}
+                                    alt={`${category.name} image ${index + 1}`}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                      console.error(`Failed to load image: ${img}`);
+                                      e.target.src = "/images/fallback.png";
+                                    }}
+                                  />
+                                </SwiperSlide>
+                              ))}
+                            </Swiper>
+                          ) : (
+                            <div className="w-[240px] h-[320px] flex items-center justify-center bg-gray-200 rounded-[18px]">
+                              <span className="text-gray-500">No images available</span>
+                            </div>
+                          )}
+                          <div className="flex justify-between text-white px-2 py-1">
+                            <span className="font-bold text-lg">{category.name}</span>
+                            <span className="text-sm">TO INSPIRE YOU</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
