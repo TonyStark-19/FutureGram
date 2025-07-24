@@ -1,23 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon, Heart, ChevronsLeft, ChevronsRight, Bold, Italic, Underline } from "lucide-react";
 import API from "../Api";
 import Header from "../components/header";
 import {
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  CssBaseline,
-  Box,
-  styled,
-  useTheme,
-  Divider,
-  Tooltip,
-  useMediaQuery,
+  Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CssBaseline, Box, styled, useTheme,
+  Divider, Tooltip, useMediaQuery
 } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -148,6 +136,7 @@ const HeaderWrapper = styled("div", { shouldForwardProp: (prop) => prop !== "ope
   })
 );
 
+// letter page
 const LetterPage = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -510,9 +499,8 @@ const LetterPage = () => {
                       {categories.map((category) => (
                         <div
                           key={category.name}
-                          className={`rounded-xl overflow-hidden shadow-lg pb-8 ${
-                            formData.selectedCategory === category.name ? "border-2 border-purple-400" : ""
-                          }`}
+                          className={`rounded-xl overflow-hidden shadow-lg pb-8 ${formData.selectedCategory === category.name ? "border-2 border-purple-400" : ""
+                            }`}
                           onClick={() => handleCategoryChange(category.name)}
                         >
                           {category.sideImages.length > 0 ? (

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import BackgroundMotion from "../components/backgroundmotion";
 import { motion } from "framer-motion";
-import Api from '../Api'
+import Api from '../Api';
+
+// import components
+import BackgroundMotion from "../components/backgroundmotion";
 import Header from "../components/header";
 
+// Register page
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: "", email: "", password: "" });
@@ -55,11 +58,10 @@ const RegisterPage = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className={`mb-4 px-4 py-2 rounded-xl text-sm font-medium text-center ${
-              alert.type === "success"
-                ? "bg-pink-200 text-pink-800 shadow-[0_0_20px_#ff9ddc]"
-                : "bg-red-100 text-red-600 shadow-[0_0_20px_#f08080]"
-            }`}
+            className={`mb-4 px-4 py-2 rounded-xl text-sm font-medium text-center ${alert.type === "success"
+              ? "bg-pink-200 text-pink-800 shadow-[0_0_20px_#ff9ddc]"
+              : "bg-red-100 text-red-600 shadow-[0_0_20px_#f08080]"
+              }`}
           >
             {alert.message}
           </motion.div>
@@ -71,6 +73,7 @@ const RegisterPage = () => {
           className="relative z-10 bg-white p-10 rounded-3xl shadow-xl max-w-md w-full mx-4"
         >
           <h2 className="text-3xl font-bold mb-6 text-center">Join Us ✨</h2>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="block mb-1 font-medium">
@@ -85,6 +88,7 @@ const RegisterPage = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f080e7]"
               />
             </div>
+
             <div>
               <label htmlFor="email" className="block mb-1 font-medium">
                 Email
@@ -98,6 +102,7 @@ const RegisterPage = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f080e7]"
               />
             </div>
+
             <div>
               <label htmlFor="password" className="block mb-1 font-medium">
                 Password
@@ -119,17 +124,19 @@ const RegisterPage = () => {
                 </span>
               </div>
             </div>
+
             <button
               type="submit"
               className="w-full bg-[#140d14] text-white py-2 rounded-xl 
                 shadow-[0_0_30px_rgba(255,255,255,0.2)] 
                 hover:bg-[#4f4d4e] transition duration-300 
-                hover:shadow-[0_0_20px_#f080e7]"
+                hover:shadow-[0_0_20px_#f080e7] cursor-pointer"
             >
               Register
             </button>
           </form>
-          <p className="mt-6 text-center text-sm">
+
+          <p className="mt-6 text-center text-[17px]">
             Already have an account?{" "}
             <span
               onClick={() => navigate("/login")}

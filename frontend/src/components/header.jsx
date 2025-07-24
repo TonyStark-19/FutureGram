@@ -1,6 +1,7 @@
-import React from "react";
+// react icons
 import { FaGithub, FaTwitter } from "react-icons/fa";
 
+// header
 const Header = () => {
   return (
     <header className="bg-[#050405] text-white flex justify-between items-center px-6 py-4 shadow-[0_0_10px_#ba72bc]">
@@ -10,7 +11,7 @@ const Header = () => {
       </div>
 
       {/* Social Links */}
-      <div className="flex gap-4 text-xl">
+      <div className="flex gap-4 text-2xl">
         <a
           href="https://github.com/hitoriiiiiiii/FutureGram"
           target="_blank"

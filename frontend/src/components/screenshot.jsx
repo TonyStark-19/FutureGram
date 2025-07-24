@@ -1,7 +1,9 @@
-import React from "react";
+// import motion
 import { motion } from "framer-motion";
+// import funkycard
 import FunkyCard from "./FunkyCard";
 
+// screenshot showcase (preview)
 const ScreenshotShowcase = () => {
   return (
     <div className="relative flex flex-col items-center justify-center px-6 pt-24 z-20 w-full">
@@ -17,7 +19,7 @@ const ScreenshotShowcase = () => {
             rotate: -1,
             transition: { type: "spring", stiffness: 180 },
           }}
-          className="w-full max-w-[640px] rounded-2xl overflow-hidden shadow-2xl border-[3px] border-gray-300"
+          className="w-full max-w-[640px] rounded-lg overflow-hidden shadow-2xl border-[3px] border-gray-300"
         >
           <img
             src="/laptop.png"
@@ -33,7 +35,7 @@ const ScreenshotShowcase = () => {
             rotate: 2,
             transition: { type: "spring", stiffness: 180 },
           }}
-          className="w-full max-w-[140px] -ml-24 mt-[-50px] z-20 rounded-[2rem] overflow-hidden shadow-2xl border-[3px] border-gray-300"
+          className="w-full max-w-[140px] -ml-24 mt-[-50px] z-20 rounded-lg overflow-hidden shadow-2xl border-[3px] border-gray-300"
         >
           <img
             src="/mobile.png"
