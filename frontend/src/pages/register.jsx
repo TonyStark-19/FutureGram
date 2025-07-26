@@ -126,7 +126,7 @@ const RegisterPage = () => {
             </div>
 
             <button
-              type="submit"
+              onClick={() => navigate("/letter")}
               className="w-full bg-[#140d14] text-white py-2 rounded-xl 
                 shadow-[0_0_30px_rgba(255,255,255,0.2)] 
                 hover:bg-[#4f4d4e] transition duration-300 

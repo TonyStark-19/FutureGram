@@ -34,10 +34,10 @@ const BackgroundMotion = () => {
             100% { transform: translateX(-100%); }
           }
           .animate-waveSlow {
-            animation: waveSlow 40s linear infinite;
+            animation: waveSlow 60s ease-in-out infinite;
           }
           .animate-waveFast {
-            animation: waveFast 25s linear infinite;
+            animation: waveFast 40s ease-in-out infinite;
           }
         `}
       </style>
