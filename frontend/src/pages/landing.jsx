@@ -87,16 +87,18 @@ const LandingPage = () => {
             Write a letter to your future self. Reflect, dream, and send it through time.
             One email, infinite impact.
           </p>
+
           <div className="space-x-4">
             <button
               onClick={() => navigate("/login")}
-              className="bg-[#050405] hover:bg-[#363d61] text-white font-semibold py-2 px-6 rounded-xl transition duration-300 shadow-[0_0_15px_#ba72bc] cursor-pointer"
+              className="bg-[#050405] hover:bg-[#353235] text-white font-semibold py-2 px-6 rounded-xl transition duration-300 shadow-[0_0_15px_#ba72bc] cursor-pointer"
             >
               Log In
             </button>
+
             <button
               onClick={() => navigate("/register")}
-              className="bg-white hover:bg-gray-100 text-black font-semibold py-2 px-6 rounded-xl transition duration-300 cursor-pointer"
+              className="bg-white hover:bg-gray-200 text-black font-semibold py-2 px-6 rounded-xl transition duration-300 cursor-pointer"
             >
               Get Started
             </button>

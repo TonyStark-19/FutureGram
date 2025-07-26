@@ -262,7 +262,6 @@ const LetterPage = () => {
         "/hitori.jpg",
         "/naruto.png",
         "/gojo.png",
-        "/hitori.jpg",
         "/naruto.png",
       ],
     },
@@ -333,7 +332,7 @@ const LetterPage = () => {
             <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center text-white">
               💭 "Dear me, I hope you're smiling today. Remember, you planted this seed."
             </h2>
-            <div className="w-full max-w-6xl bg-gradient-to-br from-purple-600 via-pink-500 to-purple-800 p-6 rounded-3xl border border-dashed border-pink-400 shadow-2xl">
+            <div className="w-full max-w-6xl bg-gradient-to-br from-purple-600 via-pink-500 to-purple-800 p-6 rounded-3xl shadow-2xl">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="flex-1">
                   <div
@@ -355,7 +354,7 @@ const LetterPage = () => {
                           whileTap={{ scale: 0.95 }}
                           whileHover={{ scale: 1.02 }}
                           onClick={handleSubmit}
-                          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors font-medium shadow-lg flex items-center gap-2"
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors font-medium shadow-lg flex items-center gap-2 cursor-pointer"
                           aria-label="Send letter"
                         >
                           Send
@@ -391,7 +390,7 @@ const LetterPage = () => {
                       />
                     </div>
                     <div
-                      className="px-4 py-2 border-b flex flex-wrap gap-1"
+                      className="px-4 py-3 border-b flex flex-wrap gap-1"
                       style={{
                         borderColor: currentTheme === "white" ? "#e5e7eb" : "rgba(255,255,255,0.2)",
                         backgroundColor: currentTheme === "white" ? "#f9fafb" : "rgba(0,0,0,0.05)",
@@ -412,9 +411,9 @@ const LetterPage = () => {
                           {btn.icon}
                         </button>
                       ))}
-                      <div className="ml-4 flex items-center gap-2">
+                      <div className="ml-4 mr-2 flex items-center gap-2">
                         <select
-                          className="text-sm border rounded px-2 py-1"
+                          className="text-sm border rounded px-2 py-1 cursor-pointer"
                           style={{
                             backgroundColor: themes[currentTheme].bg,
                             color: themes[currentTheme].text,
@@ -431,7 +430,7 @@ const LetterPage = () => {
                       </div>
                       <button
                         onClick={handleInspire}
-                        className="bg-yellow-200 text-black text-sm px-4 py-2 rounded-lg shadow hover:bg-yellow-300 transition-colors font-medium"
+                        className="bg-yellow-200 text-black text-sm px-3 py-1 rounded-lg shadow hover:bg-yellow-300 transition-colors font-medium cursor-pointer"
                         aria-label="Inspire me"
                       >
                         ✨ Inspire Me
@@ -474,7 +473,7 @@ const LetterPage = () => {
                           textField: {
                             required: true,
                             className:
-                              "w-full px-4 py-3 rounded-xl border border-white/30 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-sm",
+                              "w-full px-4 py-3 bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-sm",
                             InputProps: {
                               style: {
                                 color: themes[currentTheme].text,
@@ -494,12 +493,12 @@ const LetterPage = () => {
                     )}
                   </div>
                   <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                    <h3 className="text-lg font-semibold mb-4 text-white">Choose Anime</h3>
+                    <h3 className="text-lg tracking-wide font-semibold mb-4 text-white">Choose Anime</h3>
                     <div className="flex flex-col gap-4">
                       {categories.map((category) => (
                         <div
                           key={category.name}
-                          className={`rounded-xl overflow-hidden shadow-lg pb-8 ${formData.selectedCategory === category.name ? "border-2 border-purple-400" : ""
+                          className={`rounded-xl overflow-hidden shadow-lg ${formData.selectedCategory === category.name ? "border-2 border-purple-400" : ""
                             }`}
                           onClick={() => handleCategoryChange(category.name)}
                         >
@@ -510,7 +509,7 @@ const LetterPage = () => {
                               centeredSlides={true}
                               loop={category.sideImages.length > 1}
                               lazyPreload={true}
-                              className="w-[240px] h-[320px]"
+                              className="w-[260px] h-[320px]"
                               modules={[EffectCards]}
                             >
                               {category.sideImages.map((img, index) => (
