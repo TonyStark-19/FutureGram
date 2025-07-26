@@ -1,5 +1,4 @@
-import React from "react";
-
+// background motion
 const BackgroundMotion = () => {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

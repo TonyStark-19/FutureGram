@@ -1,6 +1,7 @@
-import React from "react";
+// import framer motion
 import { motion } from "framer-motion";
 
+// funky card
 const FunkyCard = ({ title, message, emoji = "🌈" }) => {
   return (
     <motion.div

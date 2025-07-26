@@ -1,11 +1,9 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/landing';
 import Header from './components/header';
- import LetterPage from './pages/letter';
+import LetterPage from './pages/letter';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
-
 
 const App = () => {
   return (

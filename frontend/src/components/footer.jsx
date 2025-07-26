@@ -1,5 +1,4 @@
-import React from "react";
-
+// footer
 const Footer = () => {
   return (
     <footer className="w-full mt-20 bg-gradient-to-r from-[#fbc2eb] via-[#fceabb] to-[#fbc2eb] text-gray-800 py-6 px-4 shadow-inner">
@@ -8,7 +7,8 @@ const Footer = () => {
           Made with <span className="text-pink-600 text-xl">💖</span> by{" "}
           <span className="font-bold text-black">Prarthana</span>
         </p>
-        <p className="text-sm text-gray-600 mt-2 sm:mt-0">© {new Date().getFullYear()} All rights reserved.</p>
+
+        <p className="text-[17px] text-gray-600 mt-2 sm:mt-0">© {new Date().getFullYear()} All rights reserved.</p>
       </div>
     </footer>
   );
