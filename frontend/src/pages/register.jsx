@@ -119,12 +119,9 @@ const RegisterPage = () => {
                 </span>
               </div>
             </div>
-            <button
-              type="submit"
-              className="w-full bg-[#140d14] text-white py-2 rounded-xl 
-                shadow-[0_0_30px_rgba(255,255,255,0.2)] 
-                hover:bg-[#4f4d4e] transition duration-300 
-                hover:shadow-[0_0_20px_#f080e7]"
+          <button
+              onClick={() => navigate("/letter")}
+              className="bg-[#050405] hover:bg-[#363d61] text-white font-semibold py-2 px-6 rounded-xl transition duration-300 shadow-[0_0_15px_#ba72bc] mx-auto block"
             >
               Register
             </button>
