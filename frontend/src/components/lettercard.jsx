@@ -38,26 +38,10 @@ const LetterCard = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f080e7]"
             />
           </div>
-
-          <div>
-            <label
-              htmlFor="recipient"
-              className="block mb-1 font-medium text-gray-700"
-            >
-              To
-            </label>
-            <input
-              type="text"
-              name="recipient"
-              placeholder="Recipient's name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#f080e7]"
-            />
-          </div>
-
           <div>
             <label
               htmlFor="date"
-              className="block mb-1 font-medium text-gray-700"
+              className="block mb-1 font-medium text-center text-gray-700"
             >
               Delivery Date
             </label>
@@ -101,7 +85,7 @@ const LetterCard = () => {
 
         <button
           type="submit"
-          className="bg-[#050405] hover:bg-[#363d61] text-white font-semibold py-2 px-4 rounded-xl transition duration-300 shadow-[0_0_15px_#ba72bc] mx-auto block w-50%"
+          className="bg-[#050405] hover:bg-[#363d61] text-white font-semibold py-2 px-6 rounded-xl transition duration-300 shadow-[0_0_15px_#ba72bc] mx-auto block"
         >
           ✉️ Send Letter
         </button>

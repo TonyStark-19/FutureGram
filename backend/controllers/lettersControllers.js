@@ -18,8 +18,4 @@ const createLetter = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 module.exports = { createLetter };
-=======
-module.exports = { createLetter };
->>>>>>> abecdfd8d1c535b0eb7dfa9daea6a2158dc1b5d6

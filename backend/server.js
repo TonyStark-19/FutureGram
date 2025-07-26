@@ -45,8 +45,4 @@ app.get('/api/test', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> abecdfd8d1c535b0eb7dfa9daea6a2158dc1b5d6
